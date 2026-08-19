@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "My Digital Guardian",
+  "schemaVersion": 1,
+  "description": "My Digital Guardian — a checklist and educational tool for everyday personal cyber hygiene. Add your own devices, smart things and accounts; check off what's already true; read why the rest matters; get a short prioritized list. Runs entirely offline, keeps nothing.",
+  "mcpTools": [],
+  "mcpServerNames": []
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F4D2E">
+<!-- Nothing may leave this page. default-src 'none' blocks fetch, XHR, beacons, websockets,
+     frames and fonts outright; the only permitted image source is the inlined data: logo.
+     frame-ancestors is omitted deliberately: it is ignored in a meta tag and must be an HTTP header,
+     so set it server-side if this is ever hosted. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>My Digital Guardian</title>
+<style>
+:root{
+  --brand:#1F4D2E; --brand-dk:#17391F; --accent:#2E7A4E; --on-dark:#9FE1CB;
+  --bg:#E7F0E7; --card:#FFFFFF; --cb:#D7E4D7; --divider:#E4EEE4; --fb:#CBD8CB;
+  --t1:#22372A; --t2:#5F7266; --t3:#7A8F80; --ink:#111111;
+  --crit-dot:#E24B4A; --crit-t:#A32D2D; --crit-bg:#FCEBEB;
+  --rev-dot:#D4C000;  --caut-t:#7A6514;
+  --ok-dot:#2E7A4E;   --ok-t:#1F6E43;   --ok-bg:#E2EFE8;
+  --info-t:#1A5FA8;   --info-bg:#E6F0FA;
+  --sh:0 1px 2px rgba(31,77,46.05),0 6px 18px rgba(31,77,46.07);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);
+ color:var(--t1);font-size:16.5px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit;text-align:left}
+svg{width:1em;height:1em;flex:none}
+.col{width:100%;max-width:560px;margin:0 auto;padding:0 20px}
+
+
+.bar{background:var(--brand);color:#fff;padding:13px 0;position:sticky;top:0;z-index:20}
+.bar .col{display:flex;align-items:center;gap:12px;min-height:46px}
+.bar .brand{display:flex;align-items:center;gap:12px}
+.bar img{height:38px;display:block}
+.bar .wm{font-size:18px;font-weight:600;letter-spacing:-.2px}
+.bar .sp{flex:1}
+.bar .back{display:flex;align-items:center;gap:6px;color:var(--on-dark);font-size:15.5px;font-weight:600;padding:8px 6px;margin-right:-6px}
+.bar .back svg{width:17px;height:17px}
+.bar .ttl{font-size:16.5px;font-weight:600}
+
+main{flex:1;padding:22px 0 36px}
+.sc{animation:in .2s ease}
+@keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+h1{font-size:29px;line-height:1.18;font-weight:600;letter-spacing:-.5px}
+h2{font-size:23px;line-height:1.24;font-weight:600;letter-spacing:-.35px}
+.sub{color:var(--t2);font-size:15.5px;margin-top:9px}
+.eyebrow{font-size:12px;letter-spacing:.85px;text-transform:uppercase;color:var(--t3);font-weight:700}
+
+.big{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--brand);
+ color:#fff;border-radius:14px;padding:16px;font-size:16.5px;font-weight:600;box-shadow:var(--sh)}
+.big:active{background:var(--brand-dk);transform:scale(.99)}
+.big.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--cb);box-shadow:none}
+.wipe{display:block;width:100%;text-align:center;padding:13px;font-size:14.5px;font-weight:600;color:var(--t2);border-radius:14px}
+.wipe:active{background:#fff}
+.big[disabled]{opacity:.4;pointer-events:none}
+.stack{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+
+.welcome{text-align:center;padding-top:22px}
+.crest{width:128px;height:128px;border-radius:50%;background:var(--brand);display:grid;place-items:center;margin:0 auto 24px;box-shadow:0 8px 26px rgba(31,77,46.22)}
+.crest img{width:80px;display:block}
+.welcome h1{font-size:31px}
+.welcome .sub{font-size:17px;max-width:33ch;margin:12px auto 0}
+.purpose{font-size:16.5px;line-height:1.55;color:var(--t2);text-align:left;margin:14px 0 0}
+.purpose+.purpose{margin-top:11px}
+.promise{display:flex;flex-direction:column;gap:15px;margin:16px 0 30px;text-align:left}
+.promise .p{display:flex;gap:13px;align-items:flex-start}
+.promise .ic{width:38px;height:38px;border-radius:11px;background:var(--ok-bg);color:var(--ok-t);display:grid;place-items:center}
+.promise .ic svg{width:20px;height:20px}
+.promise b{display:block;font-size:15.5px;font-weight:600}
+.promise span{font-size:14.5px;color:var(--t2)}
+.fine{font-size:13.5px;color:var(--t3);margin-top:18px;display:flex;align-items:flex-start;justify-content:center;gap:8px;text-align:left;max-width:36ch;margin-left:auto;margin-right:auto}
+.fine svg{width:16px;height:16px;margin-top:2px}
+
+.hero{background:var(--card);border-radius:18px;padding:20px;box-shadow:var(--sh);margin-bottom:18px}
+.hero .top{display:flex;align-items:center;gap:16px}
+.ring{width:64px;height:64px;position:relative}
+.ring svg{width:64px;height:64px;transform:rotate(-90deg)}
+.ring .num{position:absolute;inset:0;display:grid;place-items:center;font-size:14.5px;font-weight:700;color:var(--brand)}
+.hero .msg{font-size:17px;font-weight:600;line-height:1.32}
+.hero .msg small{display:block;font-weight:400;font-size:14.5px;color:var(--t2);margin-top:5px;line-height:1.45}
+
+.grp{margin-bottom:20px}
+.grp .eyebrow{margin:22px 0 10px;display:block}
+.todo{display:flex;align-items:center;gap:13px;background:var(--card);border-radius:14px;padding:14px 15px;box-shadow:var(--sh);margin-bottom:9px;width:100%}
+.todo .flag{width:34px;height:34px;border-radius:10px;background:var(--crit-bg);color:var(--crit-t);display:grid;place-items:center}
+.todo .flag svg{width:18px;height:18px}
+.todo.look .flag{background:var(--info-bg);color:var(--info-t)}
+.todo.habit .flag{background:var(--ok-bg);color:var(--ok-t)}
+.todo .tx{flex:1;min-width:0}
+.todo .tx b{display:block;font-size:15px;font-weight:600;line-height:1.34}
+.todo .tx span{font-size:13.5px;color:var(--t2)}
+.todo .go{color:var(--t3)}
+.todo .go svg{width:18px;height:18px}
+.hint2{font-size:13.5px;color:var(--t3);margin-top:5px}
+.hint2 b{color:var(--t2)}
+
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.cat{background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--sh);display:flex;flex-direction:column;align-items:flex-start}
+.cat .ic{width:40px;height:40px;border-radius:12px;background:var(--ok-bg);color:var(--ok-t);display:grid;place-items:center;margin-bottom:11px}
+.cat .ic svg{width:21px;height:21px}
+.cat b{display:block;font-size:16px;font-weight:600}
+.cat span{font-size:13.5px;color:var(--t2)}
+.cat .stt{display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-size:12.5px;font-weight:600}
+.dot{width:9px;height:9px;border-radius:50%}
+
+.house{background:var(--card);border-radius:16px;padding:18px;box-shadow:var(--sh);display:flex;gap:14px;align-items:center;width:100%;margin-top:11px}
+.house .ic{width:44px;height:44px;border-radius:13px;background:var(--info-bg);color:var(--info-t);display:grid;place-items:center}
+.house .ic svg{width:22px;height:22px}
+.house .tx{flex:1}
+.house .tx b{display:block;font-size:16px;font-weight:600}
+.house .tx span{font-size:13.5px;color:var(--t2);display:block;margin-top:2px}
+.house .go{color:var(--t3)}
+
+.empty{background:var(--card);border-radius:18px;padding:30px 22px;text-align:center;box-shadow:var(--sh)}
+.empty .ic{width:56px;height:56px;border-radius:17px;background:var(--ok-bg);color:var(--ok-t);display:grid;place-items:center;margin:0 auto 15px}
+.empty .ic svg{width:28px;height:28px}
+.empty b{display:block;font-size:17px;font-weight:600;margin-bottom:6px}
+.empty p{font-size:14.5px;color:var(--t2);max-width:32ch;margin:0 auto 20px}
+
+.pick{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--sh);margin-bottom:10px;width:100%}
+.pick .ic{width:44px;height:44px;border-radius:13px;background:var(--ok-bg);color:var(--ok-t);display:grid;place-items:center}
+.pick .ic svg{width:22px;height:22px}
+.pick .tx{flex:1}
+.pick .tx b{display:block;font-size:16.5px;font-weight:600}
+.pick .tx span{font-size:13.5px;color:var(--t2);display:block;margin-top:2px;line-height:1.4}
+.pick .go{color:var(--t3)}
+.pick .go svg{width:19px;height:19px}
+.pick.sel{outline:2px solid var(--accent);outline-offset:-2px}
+.pick.sel .ic{background:var(--accent);color:#fff}
+
+.thing{display:flex;align-items:center;gap:13px;background:var(--card);border-radius:15px;padding:15px;box-shadow:var(--sh);margin-bottom:9px;width:100%}
+.thing .tx{flex:1;min-width:0}
+.thing .tx b{display:block;font-size:16px;font-weight:600}
+.thing .tx .stt{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;margin-top:3px}
+.thing .tx .via{display:block;font-size:13px;color:var(--t3);margin-top:3px}
+.thing .go{color:var(--t3)}
+.thing .go svg{width:18px;height:18px}
+
+.field{width:100%;font:inherit;font-size:17px;padding:16px;border:1.5px solid var(--fb);border-radius:14px;background:#fff;color:var(--t1)}
+.field:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,122,78.13)}
+.field::placeholder{color:var(--t3)}
+.note{background:var(--info-bg);border-radius:15px;padding:17px;margin-bottom:16px}
+.note>span b{font-weight:700;color:var(--info-t)}
+.note>b{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:600;color:var(--info-t);margin-bottom:9px}
+.note>b svg{width:17px;height:17px}
+.note>span{display:block;font-size:14.5px;line-height:1.55;color:var(--t1);margin-bottom:9px}
+.notelink{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:600;color:var(--info-t);padding:4px 0}
+.notelink svg{width:15px;height:15px}
+.msg-card{background:var(--card);border-radius:16px;box-shadow:var(--sh);overflow:hidden;border:1px solid var(--cb)}
+.msg-head{display:flex;align-items:baseline;gap:9px;padding:12px 16px;border-bottom:1px solid var(--divider);background:#F7FAF7}
+.msg-head .kind{font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;font-weight:700;color:var(--t3)}
+.msg-head .from{font-size:14px;font-weight:600;color:var(--t1)}
+.msg-body{padding:16px;font-size:15.5px;line-height:1.55;color:var(--ink)}
+.reveal{background:var(--info-bg);border-radius:16px;padding:18px;margin-top:16px}
+.reveal>b{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--info-t);margin-bottom:10px}
+.reveal>b svg{width:15px;height:15px}
+.reveal ul{margin:0;padding-left:19px}
+.reveal li{font-size:14.5px;line-height:1.5;color:var(--t1);margin-bottom:9px}
+.reveal .doline{background:var(--card);border-radius:11px;padding:13px 15px;margin-top:14px}
+.reveal .doline b{display:block;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ok-t);margin-bottom:5px}
+.reveal .doline span{font-size:14.5px;line-height:1.5;color:var(--t1)}
+.lesson{display:flex;gap:14px;background:var(--card);border-radius:14px;padding:16px;box-shadow:var(--sh);margin-bottom:10px}
+.lesson .n{width:26px;height:26px;border-radius:50%;background:var(--ok-bg);color:var(--ok-t);font-size:14px;font-weight:700;display:grid;place-items:center;flex:none}
+.lesson b{display:block;font-size:16px;font-weight:600;margin-bottom:4px}
+.lesson span{font-size:14.5px;color:var(--t2);line-height:1.5}
+.script{background:var(--card);border-radius:14px;padding:16px;box-shadow:var(--sh);margin-bottom:10px;border-left:4px solid var(--accent)}
+.script b{display:block;font-size:13.5px;font-weight:700;color:var(--t2);margin-bottom:6px}
+.script span{font-size:15.5px;color:var(--ink);line-height:1.55}
+.chipgrid{display:flex;flex-wrap:wrap;gap:8px}
+.sug{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1.5px solid var(--cb);border-radius:22px;padding:10px 15px;font-size:15px;font-weight:500;color:var(--t1);box-shadow:var(--sh)}
+.sug svg{width:16px;height:16px;color:var(--accent)}
+.sug.got{background:var(--ok-bg);border-color:#BBD8C2;color:var(--ok-t)}
+.sug.got svg{color:var(--ok-t)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips button{background:#fff;border:1.5px solid var(--cb);border-radius:20px;padding:9px 15px;font-size:14.5px;font-weight:500;color:var(--t2)}
+
+.q{background:var(--card);border-radius:15px;padding:16px;box-shadow:var(--sh);margin-bottom:11px}
+.q .row{display:flex;gap:14px;align-items:flex-start}
+.q .box{width:27px;height:27px;border-radius:9px;border:2px solid var(--fb);background:#fff;display:grid;place-items:center;margin-top:1px;transition:.14s}
+.q .box svg{width:15px;height:15px;color:#fff;opacity:0;transition:.14s}
+.q.yes .box{background:var(--accent);border-color:var(--accent)}
+.q.yes .box svg{opacity:1}
+.q.unsure{box-shadow:var(--sh),inset 3.5px 0 0 var(--info-t)}
+.rule{background:#fff;border-radius:16px;padding:17px 18px;margin-bottom:12px;box-shadow:var(--sh);border-left:3.5px solid var(--info-t)}
+.rule b{display:block;font-size:17px;line-height:1.35;margin-bottom:7px}
+.rule span{display:block;font-size:15.5px;line-height:1.55;color:var(--t2)}
+.rule em{display:block;font-style:normal;font-size:14.5px;line-height:1.5;color:var(--t2);background:var(--info-bg);border-radius:11px;padding:11px 13px;margin-top:11px}
+.q .tx{flex:1}
+.q .tx b{display:block;font-size:16px;font-weight:500;line-height:1.4;color:var(--ink)}
+.q.yes .tx b{color:var(--t2)}
+.q .why{font-size:14.5px;color:var(--t2);margin-top:10px;line-height:1.5;padding-left:41px}
+.q .todoline{font-size:14.5px;color:var(--brand);font-weight:600;margin-top:10px;padding-left:41px;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
+.q .todoline svg{width:16px;height:16px;margin-top:3px}
+.q .findout{margin:12px 0 0 41px;background:var(--info-bg);border-radius:11px;padding:13px 15px}
+.q .findout b{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--info-t);margin-bottom:6px}
+.q .findout b svg{width:15px;height:15px}
+.q .findout span{display:block;font-size:14.5px;line-height:1.5;color:var(--t1)}
+.q .findout em{display:block;font-style:normal;font-size:14px;line-height:1.5;color:var(--info-t);font-weight:600;margin-top:11px;padding-top:11px;border-top:1px solid rgba(26,95,168.18)}
+.q .acts{margin-top:8px;padding-left:41px}
+.notsure{font-size:14px;font-weight:600;color:var(--info-t);display:inline-flex;align-items:center;gap:6px;padding:6px 0}
+.notsure svg{width:16px;height:16px}
+.tag{background:var(--info-bg);color:var(--info-t);font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;display:inline-block;margin-bottom:8px}
+
+.done{text-align:center;padding-top:18px}
+.done .burst{width:94px;height:94px;border-radius:50%;background:var(--ok-bg);color:var(--ok-t);display:grid;place-items:center;margin:0 auto 20px}
+.done .burst svg{width:44px;height:44px}
+.done p{color:var(--t2);font-size:15.5px;max-width:33ch;margin:8px auto 0}
+.linkline{background:var(--info-bg);color:var(--info-t);border-radius:12px;padding:13px 15px;font-size:14.5px;line-height:1.45;margin-top:18px;text-align:left}
+
+footer{padding:24px 0 32px;text-align:center}
+footer p{font-size:13px;color:var(--t3);line-height:1.6;max-width:42ch;margin:0 auto 9px}
+/* ---------- wider screens: stop being a phone app stranded on a desktop ----------
+   Placed last so these win on source order over the base rules above. */
+@media (min-width:760px){
+  .col{max-width:700px;padding:0 28px}
+  .cats{grid-template-columns:repeat(3,1fr)}
+  .twoup{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:stretch}
+  .twoup .house{margin-top:0}
+  .empty{max-width:520px;margin:0 auto}
+}
+@media (min-width:1024px){
+  .col{max-width:820px}
+  h1{font-size:33px} h2{font-size:26px}
+  .stack{max-width:440px}
+  .q .tx b,.q .why,.q .findout span,.q .todoline{max-width:66ch}
+  .hero .msg{font-size:18px}
+}
+@media (min-width:1400px){ .col{max-width:900px} }
+
+</style>
+</head>
+<body>
+<div class="bar"><div class="col" id="bar"></div></div>
+<main><div class="col" id="app"></div></main>
+<footer><div class="col" id="foot"></div></footer>
+<script>
+const DOG="data:image/png;base64,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";
+const P={
+ shield:'<path d="M12 3l7.5 2.7v5.9c0 4.6-3.2 7.9-7.5 9.4-4.3-1.5-7.5-4.8-7.5-9.4V5.7z"/><path d="M9 12l2 2 4-4"/>',
+ phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>',
+ laptop:'<rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M2 19h20"/>',
+ device:'<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M7 20h10M9 16v4M15 16v4"/>',
+ cam:'<path d="M4 7h9a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><path d="M15 11l7-4v10l-7-4"/>',
+ chip:'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+ heart:'<path d="M12 20s-7-4.4-7-9.2A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.8C19 15.6 12 20 12 20z"/>',
+ alarm:'<path d="M12 3a6 6 0 0 0-6 6c0 4-2 5-2 5h16s-2-1-2-5a6 6 0 0 0-6-6z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+ key:'<path d="M14 7a4 4 0 1 1 3 6.9V16h-2v2h-2v2h-3v-3l4.2-4.2A4 4 0 0 1 14 7z"/><path d="M16.5 9.5h.01"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+ social:'<path d="M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>',
+ gov:'<path d="M4 21h16M6 21V10M10 21V10M14 21V10M18 21V10M3 10l9-6 9 6z"/>',
+ bank:'<path d="M3 10l9-6 9 6"/><path d="M5 10v9M19 10v9M9 10v9M15 10v9M3 21h18"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"/>',
+ people:'<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.5a3 3 0 0 1 0 5.8M18 20a6 6 0 0 0-2-4.5"/>',
+ chev:'<path d="M9 6l6 6-6 6"/>', back:'<path d="M15 6l-6 6 6 6"/>',
+ check:'<path d="M5 12l5 5 10-10"/>', plus:'<path d="M12 5v14M5 12h14"/>',
+ alert:'<path d="M10.2 4L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.5 0z"/><path d="M12 9v4M12 17h.01"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+ lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/>',
+ spark:'<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>'
+};
+const I=(n,w)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w||2}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]||""}</svg>`;
+/* Escapes ' and ` as well as the usual four, so a user-supplied name can never break out of a
+   quoted HTML attribute or an inline JS string literal, wherever it later gets interpolated. */
+const esc=s=>String(s).replace(/[&<>"'`]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"}[c]));
+
+/* ================= content =================
+   w: 30 direct access · 10 precondition · 5 habit. Never displayed.
+   why: shown by default until the item is checked off.
+   todo: the concrete action, shown alongside the why.          */
+const DEV=[
+ {id:"lock",w:30,q:"You need a PIN, fingerprint or face to unlock it",
+  why:"An unlocked device is every account already signed in on it. Most things lost this way are simply left somewhere rather than broken into.",
+  find:"Lock the screen, then wake it up. If it lets you straight back in without asking for anything, it isn't set."},
+ {id:"auto",w:10,q:"It updates itself, so you don't have to remember",
+  why:"The part you notice, a new look or buttons that moved, is the small part of an update. Most of it is closing specific holes that someone already found and published. Once a hole is public it gets used, so the gap between a fix being released and you installing it is the whole window.\n\nTurn updates on automatically, and restart when it asks. Plenty of fixes don't take effect until you do.",
+  find:"Look in Settings for 'Software update' or 'System update'. It'll say whether automatic updates are switched on."},
+ {id:"supp",w:10,q:"It's new enough that the company still sends updates",
+  why:"When a company stops supporting something, the holes don't stop being found. They just stop being fixed, and they stay published where anyone can read them. The device keeps working perfectly, which is exactly what makes this easy to miss, and it gets a little more exposed every month.",
+  find:"Find the model name in Settings, then search it along with the words 'end of support'. If it's more than about six years old, assume the answer is no."},
+ {id:"av",w:5,q:"It warns you about dangerous files and websites",
+  why:"Your computer already has this built in and it's good enough. The only thing to check is that it hasn't been switched off.",
+  find:"On a Windows computer, look for 'Windows Security' in the start menu. On a Mac it is built in and always on. Either will tell you on its own screen if something has been switched off."}];
+
+const PHONE=[
+ {id:"port",w:30,q:"Your phone company won't move your number to a new SIM without a PIN",
+  why:"If someone talks your phone company into moving your number onto their phone, every code sent by text goes to them, and then your email and your bank can be reset. Every provider offers a lock or PIN to stop this, and it's free.",
+  find:"Call your phone company and ask: is there a port-out PIN or a number lock on my account? They'll tell you right away, and can add one while you're on the phone.",
+  todo:"Call your phone company and ask them to put a port-out PIN or number lock on your account."},
+ {id:"carr",w:10,q:"Your account with your phone company has its own password",
+  why:"It's the account that controls your number, which makes it worth as much as your email, and it's usually protected far less.",
+  find:"Try signing in to your phone company's website or app. If you've never needed to, it may still be on whatever they set at the start."},
+ {id:"scrn",w:5,q:"Unknown numbers are screened or go to voicemail",
+  why:"Most scam calls never turn into a conversation if they have to leave a message first.",
+  find:"On an iPhone, Settings then Phone, then 'Silence unknown callers'. On Android, open the Phone app's settings and look for 'Caller ID and spam'."}];
+
+const IOT=[
+ {id:"defpw",w:30,q:"You changed the password or PIN it came with",
+  why:"These ship with a password that's printed in manuals anyone can look up, and it's the most common way cameras and doorbells end up being used by someone else. If it has a login you never changed, treat it as having none.",
+  find:"If you can't remember ever choosing a password for it, you didn't. It came with one already set. Check its app, or the label on the device itself."},
+ {id:"mine",w:10,q:"You can get into its account yourself, not only whoever set it up",
+  why:"Plenty of connected things end up on someone else's account. A relative's, or an installer's. If you can't get in, you can't change anything, and you can't remove anyone else's access either.",
+  find:"Try signing in to its app on your own phone with your own email address. If you can't, or you had to ask someone else for the password, the account isn't yours."},
+ {id:"remote",w:10,q:"If you never check it while you're out, remote viewing is switched off",
+  why:"Most of these can be reached from anywhere, which also means they can be found from anywhere. If you only ever look at it from home, you don't need it on.",
+  find:"Open its app and look for 'remote access', 'away mode' or 'view from anywhere'. If you're still unsure, switching it off costs nothing. You'll notice right away if you needed it.",
+  todo:"Open its app and turn off remote or away-from-home access."},
+ {id:"maker",w:10,q:"The company that made it still exists and still sends updates",
+  why:"This corner of the market churns, and plenty of gadgets outlive the company that made them. When the updates stop, anything found in it afterward stays open for good, however well the gadget still works.",
+  find:"Search the company's name along with the word 'app'. If the app hasn't been updated in a couple of years, or the company's website has gone, that's your answer."}];
+
+const IOT_ACCESS=[
+ {id:"whoelse",w:30,q:"You know everyone who can still get in, and the list is current",
+  why:"Entry codes and shared access pile up: someone who cleaned, walked the dog, did work on the house, a relative. They never expire on their own, and you can't see them unless you go and look.",
+  find:"Open its app and look for 'users', 'guests', 'codes' or 'shared access'. Whatever is listed there is who can get in. Anything you don't recognize, remove.",
+  todo:"Open its app, read the list of people and codes, and remove anyone who no longer needs to get in."}];
+
+const IOT_HEALTH=[
+ {id:"share",w:10,q:"It isn't sharing where you go or when you're out with anyone you didn't choose",
+  why:"Anything you wear can record your route and your timings, and some share that by default, sometimes publicly. Worth knowing who can see it.",
+  find:"Open its app and look for 'privacy', 'sharing' or 'profile'. Anything set to public, or to everyone, can be seen by strangers.",
+  todo:"Open its app, find sharing or privacy, and turn off anything public."}];
+
+/* safety equipment replaces the IoT set entirely: availability is the property that matters */
+const IOT_SAFE=[
+ {id:"contacts",w:30,q:"The people it would alert are still right, and their numbers still work",
+  why:"This is the part that actually fails. Contacts go out of date. People move, change numbers, or aren't the right person anymore, and no one finds out until the day it matters.",
+  find:"Open its app, or the manual that came with it, and read the contact list out loud. Then call one of the numbers to be sure it still works.",
+  safe:"Still can't tell? Don't change any settings on it. Call the company that supplies it and ask them to check it with you. That's what they're there for.",
+  todo:"Check the contact list on it, and call one of the numbers to be sure it still works."},
+ {id:"works",w:30,q:"You've checked recently that it still works",
+  why:"Most of these have a test button. Using it now and again is the whole check.",
+  find:"Look for a test button on the device, or the word 'test' in its app. Most of them tell you what to expect before you press it.",
+  safe:"Still can't tell? Don't change any settings on it. Call the company that supplies it and ask them to check it with you. That's what they're there for."},
+ {id:"power",w:10,q:"You know what it does if the power or the internet goes off",
+  why:"Some keep working on a battery or a phone line and some don't. Worth knowing which yours is before you need it.",
+  find:"The manual that came with it will say. If you can't find them, call the company that supplies it and ask what happens in a power outage.",
+  safe:"Still can't tell? Don't change any settings on it. Call the company that supplies it and ask them to check it with you. That's what they're there for."}];
+
+const ACC=[
+ {id:"mfa",w:30,q:"Signing in needs a second step. A code, an app, or your fingerprint",
+  why:"Even if someone has your password, they still can't get in without the second step.",
+  find:"Sign out of it, then sign back in. If it only asks for your password and lets you in, there's no second step."},
+ {id:"uniq",w:30,q:"This password isn't used anywhere else",
+  why:"When a company gets broken into, the stolen passwords are tried everywhere else, automatically, by the million. Reusing one turns their bad day into yours.",
+  find:"If you can't say for certain, assume it's used elsewhere. That's the safer guess and it's usually the right one. Changing it takes ten minutes and settles the question for good."},
+ {id:"long",w:10,q:"The password is long. A few words together, not one short one",
+  why:"Length is what makes a password hard to guess. Four or five unrelated words beats a short one full of symbols. And don't change passwords on a schedule, only when there's a reason to think one got out.",
+  find:"Count the characters. Shorter than about fifteen, or one word with a number stuck on the end, and it's worth changing."},
+ {id:"rev",w:10,q:"You've looked through its settings in the last year",
+  why:"Old phone numbers, apps you connected once and forgot, devices still signed in that you don't recognize. It all builds up quietly.",
+  find:"Open the account and look for 'security' in its settings. If nothing on that page looks familiar, it's been a while."},
+ {id:"codes",w:5,q:"You've saved the emergency codes somewhere you can reach",
+  why:"The second step locks you out too, if you lose the phone. Keep the backup codes somewhere that doesn't need the phone to open.",
+  find:"Look in the account's security settings for 'backup codes' or 'recovery codes'. If you've never downloaded them, you don't have them."}];
+
+const ACC_MAIL=[
+ {id:"fwd",w:30,q:"Nothing is quietly forwarding or deleting your mail that you didn't set up",
+  why:"This check can catch a break-in that already happened. The first thing someone does with a stolen mailbox is add a rule copying everything to them, or deleting the warning messages before you see them. It then sits there for years.",
+  find:"In your email settings, find 'Filters', 'Rules' or 'Forwarding'. If the list is empty, or you recognize everything on it as yours, you're fine.",
+  todo:"In your email settings, open Filters and Forwarding, and delete anything you didn't put there."},
+ {id:"recov",w:10,q:"The phone number and backup address on it are still yours",
+  why:"An old number that's been reassigned, or an address you've lost access to, is a way in for someone else and a way out for you.",
+  find:"In your email settings, look for 'recovery' or 'security', and check the phone number and backup address are ones you still use."}];
+
+const ACC_SOCIAL=[
+ {id:"vis",w:30,q:"You've checked who can actually see what you post",
+  why:"Most of these start out showing your posts to everyone, and people rarely go back and look. The same page usually controls who can see your friends list, which is worth setting too. That list is how someone picks who to impersonate.",
+  find:"Open the app's settings and look for privacy. There will be a switch that makes the account private. On Facebook, look separately for the control that changes who can see your previous posts.",
+  todo:"Set the account to private. On Facebook, also change who can see your previous posts, and set who can see your Friends section."},
+ {id:"apps",w:10,q:"You've looked at which other apps and websites are connected to it",
+  why:"Signing in to something else using this account gives that company a door into it. Old quizzes, games and services stay connected for years after you've forgotten them.",
+  find:"In settings, look for 'apps and websites' or 'connected accounts'. Anything you don't recognize or no longer use can be removed.",
+  todo:"Remove anything on that list you don't currently use."},
+ {id:"tag",w:10,q:"Nothing lands on your profile from someone else without you seeing it first",
+  why:"When a friend tags you, their post can appear on your profile and go out to your friends, with their privacy settings deciding who sees it rather than yours. Turning on review means you get the last word on what sits under your name.",
+  find:"Look in settings for tagging. Facebook and Instagram let you review posts you're tagged in before they appear. X and TikTok don't, so on those check who is allowed to tag you at all.",
+  todo:"Turn on tag review where the app has it, and where it doesn't, limit who can tag you."},
+ {id:"lookup",w:10,q:"Strangers can't find your profile by typing in your phone number or email",
+  why:"These start out set to everyone. It means a number from a leaked list can be matched straight to your face, your name and your friends, which is most of what someone needs to sound convincing on the phone.",
+  find:"Look in privacy settings for how people find you. X words it as letting others find you by email or phone. Facebook words it as who it can suggest your profile to. TikTok calls it suggesting your account to others. Instagram has no such setting.",
+  todo:"Turn off both, by email and by phone. On Facebook, also switch off search engines outside Facebook linking to your profile."},
+ {id:"loc",w:10,q:"The app can't see your location, and you don't post from places as you're there",
+  why:"A photo posted while you're still somewhere says where you are now. Over a few weeks the pattern also says which mornings you're out and which two weeks the house is empty. Posting the same photos afterward costs you nothing.",
+  find:"Open your phone's settings, find the app, and look at its location permission. In the app itself, check whether old posts have a place attached.",
+  todo:"Set the app's location to Never on iPhone, or Don't allow on Android, and save the photos until you're home."},
+ {id:"quiz",w:10,q:"You skip the posts asking about your first car or the street you grew up on",
+  why:"Those are the same questions used to reset accounts and to prove who you are on the phone. The post looks like a bit of fun going around friends, and the answers are collected from the comments.",
+  find:"Nothing to look up. If a post asks for something a bank might ask you, that's the one to scroll past.",
+  todo:"Scroll past them, and delete any answer you've already left in the comments."},
+ {id:"clone",w:10,q:"You'd check before accepting a request from someone you're already friends with",
+  why:"A second request from an existing friend is almost always a copied account: same photo, same name, new profile. Once accepted, it messages your friends asking for money, and it works because your name is on it.",
+  find:"Look at the profile. A copy usually has very few posts, a recent join date, and a short friends list.",
+  todo:"Message the real person another way and ask before accepting."},
+ {id:"posts",w:10,q:"You leave the personal details out of what you post",
+  why:"Your birth year, your street, your phone number, the answers to security questions, grandchildren's names and schools, where you'll be while you're still there, photos of documents and cards. Each one on its own is nothing. Collected and put next to each other, they're most of what someone needs to prove they're you, or to sound like they know your family. It isn't a reason to stop posting. It's a reason to leave out the few details that do the damage. The Social media section on the home screen has the full list.",
+  find:"Scroll back through your last ten posts as though you were a stranger, and check the backgrounds of the photos as well as the words. What could someone work out about your family, your routine, and when you're not home?",
+  todo:"Take your birth year and any contact details off your profile, and save the vacation photos until you're back."}];
+
+const ACC_ISP=[
+ {id:"boxpw",w:30,q:"You've changed the passwords printed on your router",
+  why:"That little label is a key. Everyone who's been in your home can read it in a second: anyone doing repairs, anyone helping out, visitors. It's easy to photograph, it works forever, and it's often the settings password as well as the Wi-Fi one.",
+  find:"If no one has ever shown you how to change it, then it hasn't been changed. Call your provider and ask them to walk you through it.",
+  todo:"Call your provider and ask them to show you how to change the passwords on your router."},
+ {id:"boxage",w:10,q:"Your router is a current model",
+  why:"Old ones stop getting fixes, and you can't update them yourself. Your provider does that. They'll usually swap an old one out for free if you ask.",
+  find:"Call your provider, read them the model name printed on the router, and ask whether it's the current one.",
+  todo:"Call your provider and ask whether yours is the current model."}];
+
+const ACC_APP=[
+ {id:"store",w:30,q:"You got the app from your phone's own app store",
+  why:"Apps from anywhere else skip every check the store does. This is how most bad apps get onto phones.",
+  find:"If you installed it by tapping something in a message or on a web page, rather than searching for it in the app store, it didn't come from the store."},
+ {id:"perms",w:10,q:"You've looked at what the app can reach: location, microphone, camera, contacts",
+  why:"Apps ask for far more than they need, and keep it forever. Your phone lists this in one place now, and turning things off rarely breaks anything.",
+  find:"On a phone, look in Settings under 'Privacy' or under 'Apps'. It lists what each app is allowed to reach.",
+  todo:"Open your phone's privacy settings and look at what this app is allowed to reach."}];
+
+/* household. No inventory. The app never asks for the code word itself. */
+/* Rules you read. Nothing to check off: you cannot verify that someone knows a thing,
+   and every one of these had a "nothing to look up" in place of a way to find out. */
+const RULES=[
+ {t:"No one real asks you to read back a code",
+  b:"Not your bank, not a delivery company, not a government office, not anyone. Codes are sent to you so you can prove who you are. Anyone asking you to read one back is trying to get into something of yours, and there is no exception to that."},
+ {t:"The government and the police never call demanding money",
+  b:"Not the IRS, not Social Security, not Medicare, not the sheriff's office, not a court. None of them call to demand payment, none of them threaten arrest over the phone, and none of them ask for gift cards, wire transfers, crypto or cash in an envelope. Real matters arrive by mail and you get time to respond.\n\nIt often opens gently. A recorded voice about a case number, or someone polite who just wants to clear up a mistake. The demand comes later, once you're worried.",
+  safe:"If this has already happened and you paid something, you are not the first and it is not your fault. Call your bank right away, because money can sometimes be stopped, and report it at reportfraud.ftc.gov."},
+ {t:"Your internet or phone company won't call about your equipment",
+  b:"Pretending to be the provider is one of the most common approaches there is, because nearly everyone has one and almost no one knows what's normal. They don't call out of the blue about your router. If you're ever unsure during a call, hang up and call the number printed on your bill."},
+ {t:"When in doubt: hang up, and call back on a number you already had",
+  b:"This is the one habit that covers all of the above, and it doesn't depend on spotting anything, which is why it holds up. The number in the message is theirs. The number on your bank card, or already in your phone, is the bank's."}];
+
+/* Checks: things you can actually establish, each with a real way to find out. */
+const HOUSE=[
+ {id:"word",w:30,q:"Your family has agreed on a secret word, so you can check it's really them",
+  why:"A voice on the phone no longer proves anything. A few seconds of someone speaking is enough to copy it. A word you settled on beforehand cuts straight through that, and it costs nothing.\n\nPick it together out loud, in person, rather than over text. Avoid anything a stranger could find online, like a pet's name or the street you grew up on. And never type it in here. This app doesn't ask for it and never will.",
+  find:"If you'd have to explain to your family what you meant by it, you haven't settled on one yet.",
+  todo:"Settle on a word with your family, in person, next time you see them."},
+ {id:"banknum",w:30,q:"Your bank's real number is saved in your phone",
+  why:"This is what makes hanging up and calling back possible. If the only number you have is the one that just called you, or one from a message, you have nothing to call back on, and in the moment you'll use theirs.\n\nThe number on the back of your card is the real one. So is the one on your statement.",
+  find:"Open your contacts and search for your bank. If nothing comes up, or the only number you have arrived in a message, it doesn't count.",
+  todo:"Take the number off the back of your bank card and save it in your contacts now."},
+ {id:"moneyrule",w:30,q:"Your household has agreed that no one sends money because of a phone call",
+  why:"The call that gets through is the one about a person, not about money. A grandchild in trouble, a relative arrested, someone who needs help now and can't explain. Agreeing the rule in advance, calmly, is what makes it possible to follow when you're frightened.\n\nThe agreement is simple: whoever it claims to be, we hang up and call that person back first. Every time, with no exception for urgency.",
+  find:"Ask one person in the house what they'd do if you called asking for money urgently. If the answer isn't 'call you back first', it hasn't been agreed yet.",
+  todo:"Say it out loud to the household once: we always call back first, whoever it claims to be."},
+ {id:"report",w:5,q:"You've found the Report button in your email",
+  why:"Reporting shortens how long the same trick keeps working on other people, and it makes you stop and look at a message rather than react to it. It's worth finding it once, while nothing is wrong, so you're not hunting for it later.",
+  find:"Open your email and look at any message. There will be a 'Report' or 'Report spam' option on it. That is the one you would use.",
+  todo:"Open your email, find the Report option on any message, and note where it lives. Text scams forward to 7726."}];
+
+
+/* ---- Spotting it: practice, not a test. No score is kept and nothing scolds. ---- */
+const EXAMPLES=[
+ {kind:"Text message",from:"USPS",
+  body:"USPS: Your package could not be delivered on 8/13 due to an incomplete address. Update your details here to reschedule: usps-redelivery-track.com",
+  off:true,
+  tells:["You weren't expecting it. Nothing you did started this.",
+         "The web address isn't usps.com. It just has USPS in it. Anyone can register a name like that.",
+         "The Postal Service doesn't text you about addresses. Neither do most delivery companies unless you signed up.",
+         "There's a small clock on it: reschedule now, or lose the package."],
+  what:"If you really are expecting a package, go to the carrier's own website or app and look it up there. Never through a link in a message."},
+
+ {kind:"Phone call",from:"A young voice, crying",
+  body:"\u201cGrandma? It's me. I'm in trouble and I can't talk long. Please don't tell Mom or Dad. I need you to send some money right now, and please don't tell anyone.\u201d",
+  off:true,
+  tells:["It asks you to keep a secret. That's there to stop you checking with anyone else.",
+         "It's urgent, so there's no time to think.",
+         "A voice is no longer proof. A few seconds of someone speaking is enough to copy it.",
+         "It's aimed at a feeling, not at a fact. That's the whole design of it."],
+  what:"Ask for your secret family word, the one you settled on beforehand that no one outside the family knows. A voice on its own doesn't prove anything anymore.\n\nIf you haven't set up a secret word yet, hang up and call that person back on the number you already have. If they're fine, you've lost thirty seconds. There's more about setting one up under You and your household."},
+
+ {kind:"Email",from:"Amazon",
+  body:"Your order has shipped.\n\nApple iPhone 15 Pro, $1,199.00\nDelivering to: 44 Oakfield Rd\n\nIf you did not authorize this purchase, call our support line immediately: 1-888-555-0142",
+  off:true,
+  tells:["The phone number is the trap, not the order. They want you to call them in a panic.",
+         "The amount is large on purpose. It's there to make you react before you look.",
+         "Real companies don't put a phone number in an alert like this. They send you to your own account.",
+         "You'd know if you'd bought it."],
+  what:"Open the Amazon app or website yourself and look at your orders. If nothing's there, nothing happened. Never call a number printed inside the message."},
+
+ {kind:"Phone call",from:"\u201cYour internet provider\u201d",
+  body:"\u201cThis is technical support at your internet provider. We've detected a problem with your router that's slowing your service. I can fix it now. I just need you to go to a website so I can connect to your computer.\u201d",
+  off:true,
+  tells:["Your provider doesn't call out of the blue about your equipment.",
+         "Anyone asking to connect to your computer is the problem, not the fix.",
+         "They already sound official, and they've told you what's wrong before you noticed anything.",
+         "It's helpful and friendly. That's what makes it work."],
+  what:"Hang up. If you're worried there really is a problem, call the number printed on your bill. It costs you one phone call to be certain."}];
+
+ EXAMPLES.push({kind:"Message from a friend",from:"Someone you know",
+  body:"\u201cHi! Are you on here? I just got approved for a grant from a government program, $150,000 and I didn't have to pay it back. You should apply, I saw your name on the beneficiary list. Here's the agent who helped me.\u201d",
+  off:true,
+  tells:["It's from someone you know, which is the whole point. Their account has been copied or taken over.",
+         "It's warm and personal, and it opens with a question to get you replying.",
+         "Free money, and your name is supposedly already on a list. Neither of those things happens.",
+         "It hands you off to an \u2018agent\u2019. That's where the asking for money starts."],
+  what:"Contact that person another way. Call them, or message them somewhere else, and ask whether it was really them. If it wasn't, tell them, because they probably don't know."});
+
+EXAMPLES.push(
+ {kind:"Text message",from:"Your bank",
+  body:"FRAUD ALERT: Did you authorize a payment of $2,340.00 to CashApp on 8/14? Reply YES or NO.",
+  off:true,
+  tells:["Replying is the point. It tells them the number is live and a real person is reading it, and then the phone rings.",
+         "The call that follows sounds like the bank, because they already know you're worried and half expecting them.",
+         "The amount is large enough to make you react before you look at anything.",
+         "A real alert doesn't need you to reply. It tells you to check your account."],
+  what:"Don't reply at all. Open your bank's app, or call the number on the back of your card, and look for yourself. If there's no such payment, there's nothing to answer."},
+
+ {kind:"Phone call",from:"“Your electric company”",
+  body:"“This is the billing department. Our records show a missed payment, and your service is scheduled for disconnection within the hour. I can stop it right now if you make a payment over the phone.”",
+  off:true,
+  tells:["Within the hour. No utility works that way. Shutoff comes after written notices, weeks apart.",
+         "They want to take payment on this call, on their terms, right now.",
+         "It's aimed at a fear that feels very physical: the lights going off tonight.",
+         "Ask how they want paying and it will be a gift card, an app, or a wire. That answer ends the conversation."],
+  what:"Hang up and call the number on your actual bill, or look at your account online. If you were really behind, you would have had letters."},
+
+ {kind:"Phone call",from:"“Prize department”",
+  body:"“Congratulations. You've won $500,000 in the sweepstakes! To release the prize we just need you to cover the taxes and delivery fee first, $499, and we can have the check to you tomorrow.”",
+  off:true,
+  tells:["You have to pay to receive it. That is the whole scam, in every version of it.",
+         "Real prizes never ask for money up front. Taxes are settled afterward, with the IRS, not with the company.",
+         "You don't remember entering, because you didn't.",
+         "It's a happy call rather than a frightening one, which is exactly why people stay on the line."],
+  what:"Hang up. There is nothing to check and nothing to lose by not calling back. If it were real, it would arrive in writing and cost you nothing."},
+
+ {kind:"Screen popup",from:"A message that filled the screen",
+  body:"WARNING: Your computer is infected with 5 viruses. Your personal files and passwords are at risk.\n\nDo not shut down your computer. Call Microsoft Support immediately: 1-855-555-0177",
+  off:true,
+  tells:["“Do not shut down your computer” is there to stop you doing the one thing that clears it.",
+         "Real virus protection never gives you a phone number. It just deals with it, quietly.",
+         "Microsoft, Apple and Google don't put support numbers in warnings, and they can't see your screen.",
+         "It's a web page pretending to be your computer. It doesn't actually know anything about you."],
+  what:"Close the browser. If it won't close, restart the machine. That's all it takes, and nothing will be wrong when it comes back on. Never call the number."},
+
+ {kind:"Text message",from:"An unknown number",
+  body:"Hi Mom, my phone broke and this is my new number. Can you save it?\n\nActually I'm in a bit of trouble and can't get to my bank. Are you able to help me out until Friday?",
+  off:true,
+  tells:["It opens by getting you to accept the new number. Everything after that has your trust attached to it.",
+         "It doesn't use your name or theirs. “Mom” works on anyone who has children.",
+         "The money comes in the second message, once you've already answered the first.",
+         "It's by text rather than by voice, because a text can't be recognized."],
+  what:"Call the number you already have for them. If they really have lost their phone, someone else in the family will know."},
+
+ {kind:"Phone call",from:"“Medicare”",
+  body:"“We're issuing new Medicare cards this year and yours is ready to send out. I just need to confirm the number on your current card and your date of birth, so it goes to the right address.”",
+  off:true,
+  tells:["Medicare already has your number. Anyone who has to ask you for it doesn't work there.",
+         "It sounds administrative rather than alarming, which is what keeps people talking.",
+         "New cards, new benefits, and free equipment are the three most common openings.",
+         "Your Medicare number is worth money. It gets used to bill for treatment you never had."],
+  what:"Hang up and call 1-800-MEDICARE yourself. Treat that number the way you'd treat a card number, because that's what it is."},
+
+ {kind:"Phone call",from:"Someone raising money after the storm",
+  body:"“We're collecting for families who lost everything in the flooding last week. Every dollar goes straight to them. Can we count on you for something today. We can take a card right now over the phone.”",
+  off:true,
+  tells:["It arrived just after something was in the news, which is when these appear.",
+         "It wants the money on this call, before you've had a chance to look them up.",
+         "The name will be close to a real charity's, but not quite it.",
+         "Wanting to help isn't a weakness. It's the thing being used."],
+  what:"Say you'll give directly, and hang up. Then look the charity up yourself and donate on their own site. A real one is perfectly happy to be paid tomorrow."},
+
+ {kind:"Email",from:"Your email provider",
+  body:"Someone recently requested a password reset for your account.\n\nIf this was you, no further action is needed. This link expires in 30 minutes.\n\nIf this wasn't you, we recommend reviewing your recent account activity.",
+  off:false,
+  tells:["This one is often completely real, and that's why it's here. Not everything alarming is a scam.",
+         "It isn't asking you for anything. No number to call, no urgency pointed at you.",
+         "But it does mean someone is trying, and that they know your email address.",
+         "The danger usually comes next: a call saying “we noticed suspicious activity, read me the code we just sent you.”"],
+  what:"Don't click anything in the message. Open your email the way you normally do, change the password, turn on the second sign-in step if it isn't on, and look at which devices are signed in. Then if someone calls about it, you already know it isn't them."},
+
+ {kind:"Messages over several weeks",from:"Someone kind you met online",
+  body:"“I've never been able to talk to anyone the way I talk to you. I want to come and see you. I've been putting money aside. The only trouble is my contract payment is being held up and I'm short for the flight. I hate even asking. I'll pay you back the moment it clears.”",
+  off:true,
+  tells:["It took weeks or months, and it was warm and believable the whole way. That isn't carelessness on your part. It's the method.",
+         "You've never met in person, and something has always come up to prevent it.",
+         "The first request is modest, and it's framed as a loan.",
+         "It's far easier to see in someone else's life than in your own, which is why telling one friend works so well here."],
+  what:"Don't send anything, and don't feel foolish. This happens to careful, intelligent people constantly. Tell one person you trust before you do anything else. If the connection is real, it will survive you waiting."});
+
+const TELLS=[
+ ["It arrived on its own","You didn't start it. Almost everything that goes wrong begins with a message or a call you weren't expecting."],
+ ["There's a clock on it","Act now, today, or something bad happens. Urgency is there to stop you thinking, and it's the most reliable sign of all."],
+ ["It skips the normal way","Pay by gift card, use this link, read me the code, let me on your computer. Nothing legitimate needs you to go around the usual route."],
+ ["It makes you feel something","Panic, guilt, secrecy, or a bit of excitement. If a message changes how you feel before you've checked anything, that's the design working."]];
+
+const SCRIPTS=[
+ ["When someone calls asking for anything at all","\u201cI'm going to hang up and call you back on the number I already have.\u201d Then do it. Anyone real will be fine with that. Anyone who argues has told you what you needed to know."],
+ ["When someone asks for a code","\u201cI don't give out codes.\u201d That's the whole sentence. You don't owe an explanation, and there is no situation where a real company needs one."],
+ ["When it's family, and it's urgent","\u201cWhat's our secret word?\u201d That's what it's there for. If you haven't agreed one, ask something only the real person would know. And if they get upset about being asked, that's a reason to check harder, not to stop."],
+ ["When you need time","\u201cI'll need to check with someone first.\u201d A scam can't survive you checking. That sentence ends most of them on its own."]];
+
+/* Social media, for people who never add anything. Teaching only: nothing here is
+   scored, and nothing here needs an account to have been entered first. The scored,
+   per-account versions of the same ground live in ACC_SOCIAL. */
+const SOCIAL_SETUP=[
+ ["Set the account to private","Friends or followers only, rather than everyone. It's one switch and it's the one that matters most, because it decides who can see everything else. On Instagram, TikTok and X it covers what you've already posted as well as what comes next. Facebook is built differently, with an audience on each post, so it has a separate control for your old ones — its help calls it choosing who can see your previous posts."],
+ ["Hide your friends or followers list","That list is how someone works out whose name to borrow when they copy your account, and who to send the copy to. Facebook has a setting for who can see your Friends section. Instagram, X and TikTok have no separate control for it, so on those the private switch above is the only thing that hides it."],
+ ["Turn on tag review, if the app has it","It means a post someone tags you in doesn't land on your profile until you've said yes, instead of their settings deciding who sees it. Facebook and Instagram both do this. X and TikTok don't — there, the only choice is who is allowed to tag you at all, so set that to people you follow, or to nobody."],
+ ["Stop strangers finding you by your phone number or email","On X this is worded as letting others find you by your email or your phone, and both start out on. Facebook now words it as who it can suggest your profile to, based on your email or number, and it has a second switch for whether search engines outside Facebook can link to your profile. TikTok's version is called suggesting your account to others, and it can also remove contacts it has already taken from your phone. Instagram publishes no setting for this at all, so don't go hunting for one."],
+ ["Turn off the app's location","This one is in your phone, not in the app. On an iPhone: Settings, then Privacy & Security, then Location Services, then the app, then Never. On Android: Settings, then Apps, then the app, then Permissions, then Location, then Don't allow. Then post the vacation photos once you're home. A photo put up while you're still there says where you are now, and a few weeks of them say which two weeks the house is empty."],
+ ["Clear out what's connected to it","Signing in to something else with this account gives that company a door into it, and old quizzes, games and services stay attached for years. Every one of them keeps this list somewhere different: Facebook and Instagram under apps and websites, X under apps and sessions, TikTok under apps and services permissions, filed with security rather than privacy. Remove anything you don't use now."]];
+
+/* The personal-details list. Each one is ordinary on its own; the point of the
+   section is that they add up, so every entry says what it is actually used for. */
+const SOCIAL_DONTPOST=[
+ ["Your birthday, with the year","Date of birth is half of proving who you are to a bank or a benefits office. The birthday post is lovely. The year on your profile is the part to take off."],
+ ["Where you live","A street sign, a house number, the view from the front door, a package with the label still on it, a ‘we've moved!’ post. Look at the background of a photo before it goes up, not just the people in it."],
+ ["Your phone number or email in a public post","Once it's on a page anyone can read, it's collected within the day. If someone needs it, send it to them in a message instead."],
+ ["The answers to security questions","Mother's maiden name, first pet, first car, the street you grew up on, your first school. These turn up in ordinary posts as often as in quizzes. A pet's name is also a password more often than people admit."],
+ ["Children's and grandchildren's names, ages and schools","A name, a face and a school badge in a uniform photo is enough for a stranger to sound like they know your family, on the phone or at a gate. Ask the parent first before you post a child who isn't yours."],
+ ["What goes up about a child stays up for the rest of their life","They never agreed to any of it. By the time a child is old enough to mind, there is already a record of them going back to the week they were born, put there by adults who meant well. One post at a time it's a name, a birthday, a face each year, a school, a team, an illness, a hard week. Added together it's a profile of a person who doesn't know it exists, and they inherit it."],
+ ["A child's details are worth more than an adult's","A full name, a date of birth and an address are enough to open accounts in someone's name, and a child's are clean. Nothing flags it either, because nobody has reason to look at a child's credit, so it can run for years and usually surfaces when they apply for their first card or loan. In the US you can freeze a child's credit for free while they're under 16, which shuts the door before anything happens."],
+ ["Where you'll be, while you're still there","Vacations, a hospital stay, a funeral, the same class every Tuesday. It says the house is empty and it says where to find you. Post it afterward and it costs you nothing."],
+ ["Photos of documents and cards","A new driver's license, a bank card, a boarding pass, a vaccination record, a letter with a reference number. Barcodes photograph better than people think."],
+ ["Where you work, if it's paired with the rest","On its own it's harmless. Next to your name, your face and your routine, it's what makes a fake message from ‘the office’ land."]];
+
+const SOCIAL_HABITS=[
+ ["Scroll past the ones asking about your first car","First pet, first car, the street you grew up on, your mother's maiden name. Those are the same questions used to reset accounts and to prove who you are on the phone. The post looks like a bit of fun going around friends, and the answers are collected out of the comments. If you've already answered one, go back and delete it."],
+ ["A second request from someone you're already friends with is a copy","Same photo, same name, new profile. It usually has very few posts, a recent join date and a short friends list. Once you accept, it messages your friends asking for money, and it works because your name is on it. Message the real person another way and ask before you accept."],
+ ["Read your last ten posts as a stranger would","Not to find one bad post. To see what the ten of them say together about your family, your routine, and when you're not home. That's the view someone else gets, and it's the only way to see it."]];
+
+const CATS=[
+ {id:"devices",name:"Devices",one:"device",icon:"device",blurb:"Things you sit at and sign into.",
+  base:DEV,types:[
+   {id:"phone",name:"Phone",icon:"phone",hint:"The phone you make calls from",extra:PHONE,eg:["My phone","My cell phone"],
+    note:{t:"While you're here. The calls that come to it",
+      b:"If a call ever feels urgent, that is the moment to slow down, not speed up. Urgency is put there on purpose. Anything genuinely important will still be true in ten minutes, and you can always say \u201cI'll call you back.\u201d\n\nAnd if someone calls sounding like family and needs money right now, ask for your secret family word. The one you settled on beforehand, that no one outside the family knows. A voice on its own doesn't prove anything anymore. There's more about it under You and your household."}},
+   {id:"computer",name:"Computer or tablet",icon:"laptop",hint:"Laptop, desktop or tablet",extra:[],eg:["Kitchen laptop","My tablet","The desktop"]}]},
+ {id:"smart",name:"Smart things",one:"smart thing",icon:"chip",blurb:"Connected things you don't sit down and log into.",
+  base:IOT,types:[
+   {id:"cam",name:"Camera, doorbell or lock",icon:"cam",hint:"Anything that watches, or lets people in",extra:IOT_ACCESS,eg:["Front-door camera","Video doorbell","Smart lock"]},
+   {id:"tv",name:"Appliance, TV or speaker",icon:"chip",hint:"Fridge, washer, thermostat, vacuum, TV, speaker, plug",extra:[],eg:["Living room TV","Refrigerator","The vacuum","Thermostat"]},
+   {id:"health",name:"Watch, tracker or scales",icon:"heart",hint:"Anything you wear, or step on",extra:IOT_HEALTH,eg:["My watch","My tracker","Bathroom scales"]},
+   {id:"safe",name:"Alarm or alert equipment",icon:"alarm",hint:"Smoke alarm, house alarm, leak sensor, alert button",extra:IOT_SAFE,replace:true,eg:["Smoke alarm","House alarm","Alert button","Leak sensor"]}]},
+ {id:"accounts",name:"Accounts",one:"account",icon:"key",blurb:"The logins worth protecting. Start with your email.",
+  base:ACC,types:[
+   {id:"email",name:"Email",icon:"mail",hint:"The one that can reset all the others",extra:ACC_MAIL,eg:["My email"],
+    note:{t:"About the mail that arrives here",
+      b:"No company will email you a link to go and fix your account. If a message says something is wrong, close it, and go to that company's website or app the way you normally would.\n\nThe link is the whole trick. Everything else in the message is dressing."}},
+   {id:"money",name:"Bank or money",icon:"bank",hint:"Banking, cards, payments",extra:[],eg:["My bank","Credit card","Payment app"],
+    note:{t:"If your bank ever calls you",
+      b:"Hang up and call the number on the back of your card. A real bank will not mind in the slightest. It is exactly what they tell people to do, and their staff hear it every day.\n\nThe call that says \u201cdon't hang up, stay on the line\u201d is the one to hang up on."}},
+   {id:"gov",name:"Government or benefits",icon:"gov",hint:"Social Security, IRS, Medicare, the DMV",extra:[],eg:["My benefits account","My tax account","My retirement account"],
+    note:{t:"If a government office calls you",
+      b:"Look the office up yourself and call their published number back. Never the number they give you, and never a number from a message.\n\nNo government office asks to be paid in gift cards, wire transfers or crypto, and none of them threaten arrest over the phone. If any of that comes up, you already know what it is."}},
+   {id:"isp",name:"Internet or phone provider",icon:"globe",hint:"The company your service comes from",extra:ACC_ISP,eg:["My internet provider","My phone company"],
+    note:{t:"If your provider calls you",
+      b:"They won't. Providers don't call out of the blue about a problem with your equipment, and no honest company needs to connect to your computer to fix your internet.\n\nIf you're ever unsure, hang up and call the number printed on your bill."}},
+   {id:"social",name:"Social media",icon:"social",hint:"Facebook, Instagram, Nextdoor, anything you post on",extra:ACC_SOCIAL,eg:["My social account","My photo app","The neighborhood one"],
+    note:{t:"About what gets passed around here",
+      b:"Set the account to private first: friends only, not everyone. It's one setting, it takes a minute, and it decides who can read everything else you do here.",
+      b2:"Sharing something on doesn't open up your home, but it does hand it to everyone who trusts you, and it arrives with your name on it, which is exactly why it works. And the quiz posts asking your first car or the street you grew up on are collecting the answers used to reset accounts."}},
+   {id:"other",name:"Something else",icon:"key",hint:"Shopping, streaming, anything you sign into",extra:[],eg:["Shopping account","Streaming account","Work login"]}]}];
+
+
+
+/* Common connected things, offered as a memory aid. Tapping one skips straight to naming.
+   Wording is deliberately flat. This is recall, not warning. */
+const SWEEP=[
+ {g:"By the front door",items:[
+  ["Doorbell camera","smart","cam"],["Security camera","smart","cam"],
+  ["Smart lock","smart","cam"],["Garage door opener","smart","cam"]]},
+ {g:"Living room",items:[
+  ["TV","smart","tv"],["Streaming stick or box","smart","tv"],
+  ["Speaker","smart","tv"],["Games console","smart","tv"]]},
+ {g:"Kitchen and laundry",items:[
+  ["Refrigerator","smart","tv"],["Oven or range","smart","tv"],["Dishwasher","smart","tv"],
+  ["Washer or dryer","smart","tv"],["Water heater","smart","tv"]]},
+ {g:"Around the house",items:[
+  ["Thermostat","smart","tv"],["Robot vacuum","smart","tv"],["Smart plugs","smart","tv"],
+  ["Smart lights","smart","tv"],["Air purifier","smart","tv"],["Baby or pet monitor","smart","cam"]]},
+ /* Anything whose job is to alert you goes to the "safe" type. That set never suggests
+    switching off remote access, because for these that would defeat the purpose. */
+ {g:"Alarms and alerts",items:[
+  ["Smoke or CO alarm","smart","safe"],["Water leak sensor","smart","safe"],
+  ["House alarm","smart","safe"],["Alert button or pendant","smart","safe"]]},
+ {g:"On you",items:[
+  ["Watch","smart","health"],["Fitness tracker","smart","health"],["Scales","smart","health"]]},
+ {g:"Other",items:[
+  ["Tablet","devices","computer"],["Another phone","devices","phone"],
+  ["Printer","smart","tv"],["The car","smart","tv"]]}];
+
+
+/* The user says what they're on. No detection: guessing wrong is worse than asking. */
+const OWN=[
+  {name:"My phone",    word:"Phone",              icon:"phone",  type:"phone"},
+  {name:"My tablet",   word:"Tablet",             icon:"laptop", type:"computer"},
+  {name:"My computer", word:"Computer or laptop", icon:"laptop", type:"computer"}];
+
+const cat=id=>CATS.find(c=>c.id===id);
+const typ=(c,t)=>c.types.find(x=>x.id===t);
+function checksFor(c,it){
+  const t=typ(c,it.t);
+  let out=((t&&t.replace)?[]:c.base.slice()).concat(t?t.extra:[]);
+  if(it.isApp) out=out.concat(ACC_APP);
+  return out;
+}
+
+/* ================= state ================= */
+let uid=0;
+const store={devices:[],smart:[],accounts:[]};
+const house={};
+let view={s:"welcome"},draft="",pendType=null,pendLink=null,pendApp=false,wiping=false;
+const mk=(n,t)=>({id:"i"+(++uid),name:n,t,a:{},link:null,isApp:false});
+const findItem=(cid,iid)=>store[cid].find(x=>x.id===iid);
+const accById=id=>store.accounts.find(a=>a.id===id);
+
+/* ================= model, never displayed ================= */
+const yes=(o,k)=>o[k]===true;
+const uns=(o,k)=>o[k]==="unsure";
+const openBig=(c,it)=>checksFor(c,it).filter(k=>k.w===30&&!yes(it.a,k.id));
+const stOf=(c,it)=>openBig(c,it).length?"crit":checksFor(c,it).every(k=>yes(it.a,k.id))?"ok":"rev";
+const hOpenBig=()=>HOUSE.filter(k=>k.w===30&&!yes(house,k.id));
+const hSt=()=>hOpenBig().length?"crit":HOUSE.every(k=>yes(house,k.id))?"ok":"rev";
+const ST={crit:["Needs attention","var(--crit-dot)","var(--crit-t)"],
+          rev:["A few things left","var(--rev-dot)","var(--caut-t)"],
+          ok:["Everything we check","var(--ok-dot)","var(--ok-t)"]};
+const allThings=()=>CATS.flatMap(c=>store[c.id].map(it=>({c,it})));
+const covered=()=>allThings().filter(({c,it})=>stOf(c,it)==="ok").length+(hSt()==="ok"?1:0);
+const totalUnits=()=>allThings().length+1;
+const todos=()=>[...allThings().flatMap(({c,it})=>openBig(c,it).filter(k=>!uns(it.a,k.id)).map(k=>({c,it,k}))),
+                 ...hOpenBig().filter(k=>!uns(house,k.id)).map(k=>({c:null,it:null,k}))];
+const lookups=()=>[...allThings().flatMap(({c,it})=>checksFor(c,it).filter(k=>uns(it.a,k.id)).map(k=>({c,it,k}))),
+                   ...HOUSE.filter(k=>uns(house,k.id)).map(k=>({c:null,it:null,k}))];
+const sharedBy=id=>CATS.flatMap(c=>store[c.id]).filter(x=>x.link===id);
+
+/* ================= chrome ================= */
+function go(v){view=v;render();window.scrollTo(0,0);}
+window.go=go;
+function bar(){
+  const b=document.getElementById("bar");
+  /* the brand row is identical on every screen — it never depends on view.s */
+  const brand=`<div class="brand"><img src="${DOG}" alt=""><div class="wm">My Digital Guardian</div></div>`;
+  if(view.s==="welcome"||view.s==="home"){
+    b.innerHTML=brand;
+  }else{
+    /* every inner screen already prints its own heading, so the bar carries the
+       brand and the way back, nothing else */
+    b.innerHTML=brand+`<div class="sp"></div><button class="back" id="bk">${I("back",2.4)}Back</button>`;
+    document.getElementById("bk").onclick=()=>go(view.back||{s:"home"});
+  }
+}
+
+/* ================= screens ================= */
+function welcome(){return `<div class="sc welcome">
+  <div class="crest"><img src="${DOG}" alt=""></div>
+  <h1>Looking after your corner of the internet.</h1>
+  <p class="purpose">Your phone, your email, the TV, the doorbell, the thermostat. More of a house connects to the internet than it used to, and most of the advice about keeping it safe is written for people who already understand it. This is written for everyone else.</p>
+  <p class="purpose">There is nothing to sign up for. Some of what's here is true no matter who you are, and it's simply written down for you to read. The rest is a set of plain questions about the things you own, so you say what you have and only those questions come up. At the end you have a short list of what to do, most important first, rather than a lecture.</p>
+  <div class="eyebrow" style="text-align:left;margin:26px 0 2px">What's inside</div>
+  <div class="promise">
+    <div class="p"><div class="ic">${I("search")}</div><div><b>Would you spot it?</b><span>Real messages and calls, and what gave each one away.</span></div></div>
+    <div class="p"><div class="ic">${I("people")}</div><div><b>You and your household</b><span>The part no gadget can do for you. Nothing to add.</span></div></div>
+    <div class="p"><div class="ic">${I("social")}</div><div><b>Social media</b><span>What to change once, and what to leave out of a post.</span></div></div>
+    <div class="p"><div class="ic">${I("plus")}</div><div><b>Add what you have</b><span>Include your phone, your email, the doorbell. Check off what's already true, read why the rest matters, and finish with a short list.</span></div></div>
+  </div>
+  <button class="big" onclick="go({s:'home'})">Get started</button>
+  <p class="fine">${I("lock")}<span>Everything stays in this window. Nothing is sent anywhere, and nothing is kept when you close it.</span></p>
+  <p class="fine" style="margin-top:12px">${I("info")}<span>This covers everyday habits. Doing all of it makes you a harder target. It isn't a guarantee, and nothing can be.</span></p></div>`;}
+
+function ring(d,t){const r=27,C=2*Math.PI*r,p=t?d/t:0;
+ return `<div class="ring"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--divider)" stroke-width="6"/>
+ <circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}"/></svg>
+ <div class="num">${d}/${t}</div></div>`;}
+
+function todoRow(t,look){
+  /* habits are things to set up, not defects. They never wear the alarm flag */
+  const habit=!t.it;
+  const where=habit?"You and your household":esc(t.it.name);
+  const click=habit?`go({s:'house',title:'Your household',back:{s:'home'}})`:`openItem('${t.c.id}','${t.it.id}')`;
+  const cls=look?"look":habit?"habit":"";
+  return `<button class="todo ${cls}" onclick="${click}">
+    <span class="flag">${I(look?"info":habit?"people":"alert")}</span>
+    <span class="tx"><b>${esc(t.k.q)}</b><span>${where}</span></span>
+    <span class="go">${I("chev")}</span></button>`;}
+
+function home(){
+  const things=allThings(),td=todos(),lk=lookups(),cov=covered(),tot=totalUnits();
+  const started=things.length>0||Object.keys(house).length>0;
+  const houseCard=`<button class="house" onclick="go({s:'house',title:'Your household',back:{s:'home'}})">
+    <span class="ic">${I("people")}</span>
+    <span class="tx"><b>You and your household</b><span>${Object.keys(house).length?ST[hSt()][0]:"Calls, messages, and your secret family word"}</span></span>
+    <span class="go">${I("chev")}</span></button>`;
+  const spotCard=`<button class="house" onclick="go({s:'learn',ex:0,title:'Spotting it',back:{s:'home'}})">
+    <span class="ic">${I("search")}</span>
+    <span class="tx"><b>Would you spot it?</b><span>${EXAMPLES.length} real ones, and what gave each away</span></span>
+    <span class="go">${I("chev")}</span></button>`;
+  const socialCard=`<button class="house" onclick="go({s:'social',title:'Social media',back:{s:'home'}})">
+    <span class="ic">${I("social")}</span>
+    <span class="tx"><b>Social media</b><span>${SOCIAL_SETUP.length} settings to change, and what to leave out of a post</span></span>
+    <span class="go">${I("chev")}</span></button>`;
+  const addCard=`<button class="house" onclick="go({s:'add',title:'Add what you have',back:{s:'home'}})">
+    <span class="ic">${I("plus")}</span>
+    <span class="tx"><b>Add what you have</b><span>${started?`${CATS.reduce((n,c)=>n+store[c.id].length,0)} added so far`:"Your phone, your email, the doorbell"}</span></span>
+    <span class="go">${I("chev")}</span></button>`;
+
+  if(!started){ return `<div class="sc">
+    <h2>Four places to start.</h2>
+    <p class="sub" style="margin-bottom:22px">There's no order you have to follow. Open whichever one you like, and you can stop and come back at any point.</p>
+    <div class="twoup">${spotCard}${houseCard}${socialCard}${addCard}</div>
+    <p class="hint2" style="margin-top:14px">The first three need nothing from you and cover everyone in the house. The last is where you include what's yours.</p></div>`;}
+
+  let msg,sub;
+  if(td.length){msg=`${td.length} ${td.length===1?"thing needs":"things need"} your attention.`;
+    sub="These are the ones worth doing first. They're below, in order.";}
+  else if(cov===tot){msg="Everything we check is done.";
+    sub="That's this list covered. It isn't everything, but it is the part you control. Worth another look in six months.";}
+  else if(lk.length){msg="A few things to check.";
+    sub="Nothing urgent is open. What's left is what you weren't sure about.";}
+  else{msg="Nothing urgent left.";sub="What's still open is worth doing, but it can wait for a spare ten minutes.";}
+
+  return `<div class="sc">
+    <div class="hero"><div class="top">${ring(cov,tot)}<div class="msg">${esc(msg)}<small>${esc(sub)}</small></div></div></div>
+    <div class="grp"><span class="eyebrow">Start here, whatever you own</span><div class="twoup">${spotCard}${houseCard}${socialCard}${addCard}</div>
+      <p class="hint2">The first three cover everyone in the house, and there's nothing to add for them.</p></div>
+    ${td.length?`<div class="grp"><span class="eyebrow">Do these first</span>${td.slice(0,4).map(t=>todoRow(t)).join("")}
+      ${td.length>4?`<p class="hint2">and ${td.length-4} more after these</p>`:""}</div>`:""}
+    ${lk.length?`<div class="grp"><span class="eyebrow">Things to check</span>${lk.slice(0,4).map(t=>todoRow(t,true)).join("")}
+      <p class="hint2">Each of these tells you how to find out when you open it. Not knowing isn't a failure. It's just the next thing to look at.</p></div>`:""}
+    <div class="grp"><span class="eyebrow">Your things</span>
+      <div class="cats">${CATS.map(c=>{
+        const n=store[c.id].length,bad=store[c.id].filter(it=>stOf(c,it)==="crit").length;
+        const s=!n?null:bad?"crit":store[c.id].every(it=>stOf(c,it)==="ok")?"ok":"rev";
+        return `<button class="cat" onclick="go({s:'list',cid:'${c.id}',title:'${esc(c.name)}',back:{s:'home'}})">
+          <span class="ic">${I(c.icon)}</span><b>${esc(c.name)}</b><span>${n?n+" added":"None yet"}</span>
+          ${s?`<span class="stt" style="color:${ST[s][2]}"><span class="dot" style="background:${ST[s][1]}"></span>${ST[s][0]}</span>`:""}
+        </button>`;}).join("")}</div></div>
+    <div class="stack"><button class="big ghost" onclick="go({s:'sweep',title:'Anything else?',back:{s:'home'}})">${I("plus")}Anything else that connects?</button>
+      <button class="wipe" onclick="wipe()">${wiping?"Tap again to clear it":"Clear this and start over"}</button></div>
+    <p class="hint2" style="text-align:center">${wiping?"Everything on this page will be removed.":"Nothing is saved anyway, but this clears the screen if you're on a shared computer."}</p></div>`;}
+
+function sweep(){
+  const have=CATS.flatMap(c=>store[c.id].map(x=>x.name.toLowerCase()));
+  return `<div class="sc"><h2>Anything else that connects?</h2>
+  <p class="sub" style="margin-bottom:6px">Most homes have more of these than people expect. The ones that just sit there working are the easiest to forget. Tap anything you've got.</p>
+  <p class="hint2" style="margin-bottom:22px">A thermostat or a doorbell sits on the same home network as your computer, so each one is worth a minute.</p>
+  ${SWEEP.map(g=>`<div class="grp"><span class="eyebrow">${esc(g.g)}</span><div class="chipgrid">
+    ${g.items.map(([n,c,t])=>`<button class="sug ${have.includes(n.toLowerCase())?"got":""}" onclick="quickAdd('${esc(n)}','${c}','${t}')">
+      ${have.includes(n.toLowerCase())?I("check"):I("plus")}<span>${esc(n)}</span></button>`).join("")}
+  </div></div>`).join("")}
+  <div class="stack">
+    <button class="big ghost" onclick="go({s:'pick',title:'Add something',back:{s:'home'}})">Something not on this list</button>
+    <button class="big" onclick="go({s:'home'})">That's everything</button></div></div>`;}
+
+
+function learn(){
+  const i=view.ex||0, e=EXAMPLES[i], shown=view.rev;
+  return `<div class="sc">
+    <span class="eyebrow">Practice ${i+1} of ${EXAMPLES.length}</span>
+    <h2 style="margin:8px 0 18px">Would this one get past you?</h2>
+    <div class="msg-card">
+      <div class="msg-head"><span class="kind">${esc(e.kind)}</span><span class="from">${esc(e.from)}</span></div>
+      <div class="msg-body">${esc(e.body).replace(/\n/g,"<br>")}</div>
+    </div>
+    ${shown?`
+      <div class="reveal">
+        <b>${I("search")}${e.off?"What gives it away":"What's going on here"}</b>
+        <ul>${e.tells.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
+        <div class="doline"><b>${e.off?"What to do instead":"What to do"}</b><span>${esc(e.what).replace(/\n\n/g,"<br><br>")}</span></div>
+      </div>
+      <div class="stack">
+        ${i+1<EXAMPLES.length
+          ? `<button class="big" onclick="go({s:'learn',ex:${i+1},title:'Spotting it',back:view.back})">Next one</button>`
+          : `<button class="big" onclick="go({s:'tells',title:'Spotting it',back:view.back})">What they all had in common</button>`}
+      </div>`
+    :`<div class="stack">
+        <button class="big ghost" onclick="reveal()">This one looks fine</button>
+        <button class="big ghost" onclick="reveal()">Something's off about it</button>
+      </div>
+      <p class="hint2" style="text-align:center;margin-top:14px">Either way, we'll show you what to look at.</p>`}
+  </div>`;}
+
+function tells(){
+  return `<div class="sc"><h2>What they all had in common</h2>
+  <p class="sub" style="margin-bottom:20px">You don't have to spot the trick. You only have to notice these, and they're the same every time.</p>
+  ${TELLS.map(([t,d],n)=>`<div class="lesson"><span class="n">${n+1}</span><div><b>${esc(t)}</b><span>${esc(d)}</span></div></div>`).join("")}
+  <span class="eyebrow" style="display:block;margin:28px 0 12px">Things you can actually say</span>
+  <p class="sub" style="margin:-4px 0 16px">Most people freeze because they haven't got the words ready. These are the words.</p>
+  ${SCRIPTS.map(([t,d])=>`<div class="script"><b>${esc(t)}</b><span>${esc(d)}</span></div>`).join("")}
+  <div class="stack"><button class="big" onclick="go({s:'home'})">Back to my Guardian</button></div></div>`;}
+
+function social(){
+  return `<div class="sc"><h2>Social media</h2>
+  <p class="sub" style="margin-bottom:6px">Nothing to add and nothing to score. What to change once, what to leave out of a post, and what to keep doing.</p>
+  <p class="hint2" style="margin-bottom:22px">Not every app offers every one of these, and the ones that do keep them in different places under different names. Where a setting doesn't exist, it says so below, so you're not left looking for something that isn't there. Checked against each company's own help pages in August 2026.</p>
+  <span class="eyebrow" style="display:block;margin:0 0 12px">Change these once</span>
+  ${SOCIAL_SETUP.map(([t,d],n)=>`<div class="lesson"><span class="n">${n+1}</span><div><b>${esc(t)}</b><span>${esc(d)}</span></div></div>`).join("")}
+  <span class="eyebrow" style="display:block;margin:28px 0 12px">Think twice before these go in a post</span>
+  <p class="sub" style="margin:-4px 0 6px">Settings decide who's reading. This is about what's there to read.</p>
+  <p class="hint2" style="margin-bottom:16px">Every one of these is ordinary on its own. Nobody is caught out by a single post. They're collected, put next to each other, and used together, which is why the list matters more than any one line on it.</p>
+  ${SOCIAL_DONTPOST.map(([t,d])=>`<div class="script"><b>${esc(t)}</b><span>${esc(d)}</span></div>`).join("")}
+  <div class="linkline">This isn't a reason to stop posting. Posting is the point of the thing. It's a reason to decide who's reading first, and to leave out the few details that do the damage.</div>
+
+  <span class="eyebrow" style="display:block;margin:28px 0 12px">Then keep doing these</span>
+  ${SOCIAL_HABITS.map(([t,d])=>`<div class="script"><b>${esc(t)}</b><span>${esc(d)}</span></div>`).join("")}
+  <div class="linkline">If you'd like this tracked rather than just read, add your account under Add what you have. You'll get the same ground as a checklist, and it counts toward what's done.</div>
+  <div class="stack">
+    <button class="big ghost" onclick="go({s:'type',cid:'accounts',title:'Add account',back:{s:'social',title:'Social media',back:{s:'home'}}})">${I("plus")}Add my account and track it</button>
+    <button class="big" onclick="go({s:'home'})">Back to my Guardian</button></div></div>`;}
+
+function pick(){return `<div class="sc"><h2>What would you like to add?</h2>
+  <p class="sub" style="margin-bottom:20px">One at a time. You can add as many as you like.</p>
+  ${CATS.map(c=>`<button class="pick" onclick="go({s:'type',cid:'${c.id}',title:'Add ${esc(c.one)}',back:{s:'pick',title:'Add something',back:{s:'home'}}})">
+    <span class="ic">${I(c.icon)}</span><span class="tx"><b>${esc(c.name)}</b><span>${esc(c.blurb)}</span></span>
+    <span class="go">${I("chev")}</span></button>`).join("")}</div>`;}
+
+function type(){const c=cat(view.cid);
+  return `<div class="sc"><h2>What kind of ${esc(c.one)}?</h2>
+  <p class="sub" style="margin-bottom:20px">Only so we ask you the right questions.</p>
+  ${c.types.map(t=>`<button class="pick" onclick="chooseType('${t.id}')">
+    <span class="ic">${I(t.icon)}</span><span class="tx"><b>${esc(t.name)}</b><span>${esc(t.hint)}</span></span>
+    <span class="go">${I("chev")}</span></button>`).join("")}</div>`;}
+
+function nameScreen(){const c=cat(view.cid),t=typ(c,pendType);
+  return `<div class="sc"><h2>What do you want to call it?</h2>
+  <p class="sub" style="margin-bottom:8px">A nickname you'll recognize is plenty. Try to avoid the brand, the app name, or the model.</p>
+  <p class="hint2" style="margin-bottom:18px">"The front camera" beats naming the make, and "my bank" beats naming the bank. Then this list tells a stranger nothing, even if they read it over your shoulder.</p>
+  <input class="field" id="nm" placeholder="${esc(t.eg[0])}" value="${esc(draft)}" autocomplete="off">
+  <div class="chips">${t.eg.map(e=>`<button onclick="setDraft(this.textContent)">${esc(e)}</button>`).join("")}</div>
+  ${c.id==="accounts"?`<button class="pick ${pendApp?"sel":""}" style="margin-top:22px" onclick="toggleApp()">
+    <span class="ic">${I("phone")}</span><span class="tx"><b>It's also an app on my phone</b>
+    <span>Adds two questions about what the app can reach</span></span>
+    <span class="go">${pendApp?I("check"):""}</span></button>`:""}
+  <div class="stack"><button class="big" id="nx" ${draft.trim()?"":"disabled"}>Next</button></div></div>`;}
+
+function linkScreen(){const accs=store.accounts;
+  return `<div class="sc"><h2>Which account controls it?</h2>
+  <p class="sub" style="margin-bottom:20px">Nearly every connected thing is run through an account or an app, and that account is usually the easier way in. Fixing one takes care of everything on it.</p>
+  ${accs.map(a=>`<button class="pick" onclick="setLink('${a.id}')"><span class="ic">${I("key")}</span>
+    <span class="tx"><b>${esc(a.name)}</b><span>${sharedBy(a.id).length?sharedBy(a.id).length+" other thing"+(sharedBy(a.id).length===1?"":"s")+" already on it":"Already on your list"}</span></span></button>`).join("")}
+  <button class="pick" onclick="setLink('new')"><span class="ic">${I("plus")}</span>
+    <span class="tx"><b>Add that account</b><span>We'll ask about it next</span></span></button>
+  <button class="pick" onclick="setLink('')"><span class="ic">${I("info")}</span>
+    <span class="tx"><b>I'm not sure</b><span>You can always come back to this</span></span></button></div>`;}
+
+function checkBlock(k,ans,onT,onU){
+  const y=yes(ans,k.id),u=uns(ans,k.id);
+  return `<div class="q ${y?"yes":""} ${u?"unsure":""}">
+    <div class="row"><button class="box" onclick="${onT}" aria-label="Yes, that is true">${I("check",3)}</button>
+      <div class="tx">${u?`<span class="tag">Not sure yet</span>`:""}
+        <b onclick="${onT}">${esc(k.q)}</b></div></div>
+    ${y?"":`<div class="why">${esc(k.why).replace(/\n\n/g,"<br><br>")}</div>`}
+    ${u?`<div class="findout"><b>${I("search")}How to find out</b><span>${esc(k.find)}</span>
+        <em>${esc(k.safe||"Still can't tell? Treat it as not done. Everything on this list is safe to do twice. You can't break anything by doing it again.")}</em></div>`:""}
+    ${!y&&k.todo?`<div class="todoline">${I("spark")}<span>${esc(k.todo)}</span></div>`:""}
+    ${!y&&!u?`<div class="acts"><button class="notsure" onclick="${onU}">${I("info")}I'm not sure</button></div>`:""}</div>`;}
+
+function item(){
+  const c=cat(view.cid),it=findItem(view.cid,view.iid);
+  if(!it)return home();
+  const ks=checksFor(c,it),left=ks.filter(k=>!yes(it.a,k.id)).length;
+  const acc=it.link?accById(it.link):null,sh=acc?sharedBy(acc.id).length:0;
+  return `<div class="sc"><h2>${esc(it.name)}</h2>
+  <p class="sub" style="margin-bottom:${acc?"8px":"18px"}">${left?`Check off anything that's already true. ${left} to look at.`:"Everything here is checked off."}</p>
+  ${acc?`<p class="hint2" style="margin-bottom:18px">Run through <b>${esc(acc.name)}</b>${sh>1?`, along with ${sh-1} other thing${sh-1===1?"":"s"}`:""}.</p>`:""}
+  ${(()=>{const t=typ(c,it.t);return t&&t.note?`<div class="note"><b>${I("info")}${esc(t.note.t)}</b>
+     <span>${esc(t.note.b).replace(/\n\n/g,"</span><span>")}</span>${t.note.b2?`<span>${esc(t.note.b2)}</span>`:""}
+     <button class="notelink" onclick="go({s:'learn',ex:0,title:'Spotting it',back:{s:'item',cid:'${c.id}',iid:'${it.id}',title:'${esc(c.name)}',back:{s:'home'}}})">See what these look like${I("chev")}</button></div>`:"";})()}
+  ${ks.map(k=>checkBlock(k,it.a,`tog('${k.id}')`,`unsure('${k.id}')`)).join("")}
+  <div class="stack"><button class="big" onclick="finish()">${left?"Save and go back":"Done"}</button></div></div>`;}
+
+function houseScreen(){
+  const left=HOUSE.filter(k=>!yes(house,k.id)).length;
+  return `<div class="sc"><h2>You and your household</h2>
+  <p class="sub" style="margin-bottom:18px">The part no gadget can do for you. First a few things that are always true, then a few worth putting in place.</p>
+  <div class="eyebrow">Always true, nothing to do</div>
+  <p class="hint2" style="margin:2px 0 14px">Worth reading once. There is no exception to any of them.</p>
+  ${RULES.map(r=>`<div class="rule"><b>${esc(r.t)}</b><span>${esc(r.b).replace(/\n\n/g,"</span><span style='margin-top:9px'>")}</span>${r.safe?`<em>${esc(r.safe)}</em>`:""}</div>`).join("")}
+  <div class="eyebrow" style="margin-top:30px">Worth putting in place</div>
+  <p class="hint2" style="margin:2px 0 14px">${left?`${left} to look at.`:"All done."}</p>
+  ${HOUSE.map(k=>checkBlock(k,house,`togH('${k.id}')`,`unsH('${k.id}')`)).join("")}
+  <div class="note" style="margin-top:20px"><b>${I("people")}If the person you're worried about knows you</b>
+    <span>Everything above assumes the trouble comes from a stranger. If it's a partner, an ex, or someone in the family, this isn't the right advice, and some of it, like changing passwords or turning on alerts, can be noticed and make things worse.</span>
+    <span>It doesn't have to have been physical. Being tracked, having your messages, photos or location checked, being asked for your passwords, being controlled through money, or being made to feel afraid of what happens if you say no. That is abuse too, and none of it needs to have turned into being hit, pushed or touched for you to be entitled to help.</span>
+    <span>You don't have to be certain, and you don't have to be planning to leave. You can call and just describe what's happening and let someone who does this every day tell you what they make of it.</span>
+    <span>In the US, the National Domestic Violence Hotline is <b>1-800-799-7233</b>, day or night. They help with phones, accounts and being tracked, not only with leaving.</span>
+    <span>If speaking isn't safe, because someone is nearby or might hear, you don't have to call at all. Text <b>START</b> to <b>88788</b>, or open the chat at thehotline.org. Both reach the same advocates as the phone line.</span>
+    <span>If you are Deaf, DeafBlind or hard of hearing, the National Deaf Domestic Violence Hotline is <b>855-812-1001</b> by video phone, answered in ASL by advocates who are Deaf themselves.</span></div>
+  <div class="stack"><button class="big" onclick="go({s:'home'})">Back to my Guardian</button></div></div>`;}
+
+function done(){
+  const c=cat(view.cid),it=findItem(view.cid,view.iid);
+  if(!it)return home();
+  const s=stOf(c,it),acc=it.link?accById(it.link):null,sh=acc?sharedBy(acc.id).length:0;
+  return `<div class="sc done"><div class="burst">${I(s==="ok"?"check":"shield",2.3)}</div>
+    <h2>${s==="ok"?"That's everything we check.":"Saved."}</h2>
+    <p>${s==="ok"?`Everything we ask about ${esc(it.name)} is done. Not the same as safe, but it is the part you control.`
+      :`${esc(it.name)} is on your list, and anything urgent is at the top of the home screen.`}</p>
+    ${sh>1?`<div class="linkline">${esc(acc.name)} also controls ${sh-1} other thing${sh-1===1?"":"s"} on your list. Fixing that one account takes care of all of them at once.</div>`:""}
+    <div class="stack"><button class="big" onclick="go({s:'sweep',title:'Anything else?',back:{s:'home'}})">${I("plus")}Anything else around the house?</button>
+      <button class="big ghost" onclick="go({s:'home'})">Back to my Guardian</button></div></div>`;}
+
+function list(){const c=cat(view.cid);
+  return `<div class="sc"><h2>${esc(c.name)}</h2><p class="sub" style="margin-bottom:20px">${esc(c.blurb)}</p>
+  ${store[c.id].length?store[c.id].map(it=>{const s=stOf(c,it),a=it.link?accById(it.link):null;
+    return `<button class="thing" onclick="openItem('${c.id}','${it.id}')"><span class="tx"><b>${esc(it.name)}</b>
+      <span class="stt" style="color:${ST[s][2]}"><span class="dot" style="background:${ST[s][1]}"></span>${ST[s][0]}</span>
+      ${a?`<span class="via">Run through ${esc(a.name)}</span>`:""}</span><span class="go">${I("chev")}</span></button>`;}).join("")
+   :`<div class="empty"><div class="ic">${I(c.icon)}</div><b>Nothing here yet</b><p>${esc(c.blurb)}</p></div>`}
+  <div class="stack"><button class="big ghost" onclick="go({s:'type',cid:'${c.id}',title:'Add ${esc(c.one)}',back:{s:'list',cid:'${c.id}',title:'${esc(c.name)}',back:{s:'home'}}})">${I("plus")}Add ${/^[aeiou]/i.test(c.one)?"an":"a"} ${esc(c.one)}</button></div></div>`;}
+
+/* ================= actions ================= */
+window.reveal=()=>{view.rev=true;render();};
+window.quickAdd=(n,cid,t)=>{
+  const it=mk(n,t); store[cid].push(it);
+  const bk={s:"sweep",title:"Anything else?",back:{s:"home"}};
+  if(cid==="smart"&&store.accounts.length){pendLink={cid,iid:it.id};go({s:"link",title:"Which account?",back:bk});return;}
+  go({s:"item",cid,iid:it.id,title:cat(cid).name,back:bk});
+};
+window.wipe=()=>{
+  if(!wiping){wiping=true;render();setTimeout(()=>{wiping=false;render();},4000);return;}
+  CATS.forEach(c=>store[c.id].length=0);
+  Object.keys(house).forEach(k=>delete house[k]);
+  wiping=false; go({s:"welcome"});
+};
+window.startWith=(type,name)=>{
+  const it=mk(name,type); store.devices.push(it);
+  go({s:"item",cid:"devices",iid:it.id,title:"Devices",back:{s:"home"}});
+};
+window.setDraft=v=>{draft=v;render();const n=document.getElementById("nm");if(n){n.focus();n.setSelectionRange(v.length,v.length);}};
+window.chooseType=t=>{pendType=t;draft="";pendApp=false;go({s:"name",cid:view.cid,title:view.title,back:view.back});};
+window.toggleApp=()=>{pendApp=!pendApp;render();};
+window.openItem=(cid,iid)=>go({s:"item",cid,iid,title:cat(cid).name,back:{s:"list",cid,title:cat(cid).name,back:{s:"home"}}});
+window.tog=k=>{const it=findItem(view.cid,view.iid);it.a[k]=it.a[k]===true?undefined:true;render();};
+window.unsure=k=>{const it=findItem(view.cid,view.iid);it.a[k]="unsure";render();};
+window.togH=k=>{house[k]=house[k]===true?undefined:true;render();};
+window.unsH=k=>{house[k]="unsure";render();};
+window.finish=()=>go({s:"done",cid:view.cid,iid:view.iid,title:"",back:{s:"home"}});
+window.setLink=v=>{
+  const w=pendLink;
+  if(v==="new"){go({s:"type",cid:"accounts",title:"Add account",back:{s:"home"}});return;}
+  const it=findItem(w.cid,w.iid); it.link=v||null; pendLink=null;
+  go({s:"item",cid:w.cid,iid:w.iid,title:cat(w.cid).name,back:{s:"home"}});
+};
+
+function addScreen(){
+  const n=CATS.reduce((a,c)=>a+store[c.id].length,0);
+  return `<div class="sc"><h2>Add what you have</h2>
+  <p class="sub" style="margin-bottom:18px">So the advice fits what's actually in your house.</p>
+
+  <div class="rule" style="margin-bottom:22px">
+    <b>Why this step exists</b>
+    <span>A phone, an email account and a doorbell camera each need completely different things looked at. There's no single list that's right for everyone.</span>
+    <span style="margin-top:9px">Once you add something, you only see the checks that apply to it. Everything about gadgets you don't own stays out of your way.</span>
+    <span style="margin-top:9px">You don't have to add everything, and there's no order. One thing is enough to begin, and you can come back whenever you think of something else.</span>
+  </div>
+
+  ${n?`<p class="hint2" style="margin-bottom:16px">${n} added so far.</p>`:`
+  <span class="eyebrow" style="margin-top:0">The easiest one to start with</span>
+  <p class="sub" style="margin:2px 0 12px">What are you reading this on? It's right here, so it takes a few seconds.</p>
+  <div class="chipgrid" style="margin-bottom:26px">${OWN.map(o=>`<button class="sug" onclick="startWith('${o.type}','${esc(o.name)}')">${I(o.icon)}<span>${esc(o.word)}</span></button>`).join("")}</div>`}
+
+  <span class="eyebrow">${n?"Add something":"Or start somewhere else"}</span>
+  <p class="sub" style="margin:2px 0 12px">You can add as many as you like, in any order.</p>
+  <div class="cats">${CATS.map(c=>{
+    const k=store[c.id].length;
+    return `<button class="cat" onclick="go({s:'type',cid:'${c.id}',title:'Add ${esc(c.one)}',back:{s:'add',title:'Add what you have',back:{s:'home'}}})">
+      <span class="ic">${I(c.icon)}</span><b>${esc(c.name)}</b><span>${k?k+" added":esc(c.blurb)}</span></button>`;}).join("")}</div>
+
+  <div class="stack"><button class="big ghost" onclick="go({s:'sweep',title:'Anything else?',back:{s:'add',title:'Add what you have',back:{s:'home'}}})">${I("search")}Things people forget they have</button>
+    <button class="big" onclick="go({s:'home'})">Back to my Guardian</button></div></div>`;}
+
+const SCREENS={welcome,home,pick,sweep,learn,tells,social,type,name:nameScreen,link:linkScreen,list,item,done,house:houseScreen,add:addScreen};
+
+function render(){
+  bar();
+  document.getElementById("app").innerHTML=(SCREENS[view.s]||home)();
+  document.getElementById("foot").innerHTML="";
+  if(view.s==="name"){
+    const n=document.getElementById("nm"),nx=document.getElementById("nx");
+    n.focus();
+    n.oninput=()=>{draft=n.value;nx.disabled=!draft.trim();};
+    n.onkeydown=e=>{if(e.key==="Enter"&&draft.trim())nx.click();};
+    nx.onclick=()=>{
+      const c=cat(view.cid),it=mk(draft.trim(),pendType);
+      if(c.id==="accounts"&&pendApp)it.isApp=true;
+      store[view.cid].push(it);draft="";pendApp=false;
+      if(pendLink&&c.id==="accounts"){                 /* created to satisfy a link */
+        const w=findItem(pendLink.cid,pendLink.iid); if(w)w.link=it.id; pendLink=null;
+      }else if(c.id==="smart"){
+        pendLink={cid:c.id,iid:it.id};
+        go({s:"link",title:"Which account?",back:{s:"home"}});return;
+      }
+      go({s:"item",cid:c.id,iid:it.id,title:c.name,back:{s:"home"}});
+    };
+  }
+}
+render();
+</script>
+</body>
+</html>
