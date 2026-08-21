@@ -1,11 +1,8 @@
-<script data-goatcounter="https://digitalguardian.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-
 <!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
 {
   "name": "My Digital Guardian",
   "schemaVersion": 1,
-  "description": "My Digital Guardian — a checklist and educational tool for everyday personal cyber hygiene. Add your own devices, smart things and accounts; tick what's already true; read why the rest matters; get a short prioritised list. Runs entirely offline, keeps nothing.",
+  "description": "My Digital Guardian — a checklist and educational tool for everyday personal cyber hygiene. Add your own devices, smart things and accounts; tick what's already true; read why the rest matters; get a short prioritised list. Runs entirely in the browser, keeps nothing.",
   "mcpTools": [],
   "mcpServerNames": []
 }
@@ -15,11 +12,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1F4D2E">
-<!-- Nothing may leave this page. default-src 'none' blocks fetch, XHR, beacons, websockets,
-     frames and fonts outright; the only permitted image source is the inlined data: logo.
+<!-- Nothing the reader enters may leave this page. default-src 'none' blocks fetch, XHR,
+     beacons, websockets, frames and fonts outright. The only exceptions are named one by
+     one below, and they are the visit counter and nothing else:
+       script-src  gc.zgo.at                        the counter's script
+       img-src     digitalguardian.goatcounter.com  the counting pixel it fires
+       connect-src digitalguardian.goatcounter.com  the sendBeacon fallback for the same
+     The counter records that a page was opened. It sets no cookies and receives nothing
+     the reader types, because there is no route out of here for any of it.
+     Anything added to this page that is not on this list simply will not load.
      frame-ancestors is omitted deliberately: it is ignored in a meta tag and must be an HTTP header,
      so set it server-side if this is ever hosted. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data: https://digitalguardian.goatcounter.com; style-src 'unsafe-inline'; script-src 'unsafe-inline' https://gc.zgo.at; connect-src https://digitalguardian.goatcounter.com; base-uri 'none'; form-action 'none'">
+<!-- Visit counter. Must sit below the doctype: anything above it is parsed before the
+     document type is read and drops the whole page into quirks mode. -->
+<script data-goatcounter="https://digitalguardian.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 <meta name="referrer" content="no-referrer">
 <!--
   My Digital Guardian
